@@ -16,9 +16,13 @@ app.use((req, res, next) => {
 	next();
 });
 
+// ✅ Added a root route
+app.get('/', (req, res) => {
+	res.send('Backend is running!');
+});
+
 app.get('/posts', async (req, res) => {
 	const storedPosts = await getStoredPosts();
-	// await new Promise((resolve, reject) => setTimeout(() => resolve(), 1500));
 	res.json({ posts: storedPosts });
 });
 
@@ -40,4 +44,8 @@ app.post('/posts', async (req, res) => {
 	res.status(201).json({ message: 'Stored new post.', post: newPost });
 });
 
-app.listen(8080);
+// ✅ Update the port to use Vercel's dynamic port
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+	console.log(`Server is running on port ${PORT}`);
+});
